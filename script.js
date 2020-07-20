@@ -10,7 +10,7 @@ window.addEventListener("load", function() {
       let emptyField = false;
       let badNumber = false;
 
-      // event.preventDefault();
+      event.preventDefault();
 
       for (let i = 0; i < values.length; i++) {
          if (values[i] === "") {
@@ -24,24 +24,42 @@ window.addEventListener("load", function() {
       };
 
       if (emptyField) {
-         event.preventDefault();
+         // event.preventDefault();
          alert("All fields are required.");
       } else if (badNumber) {
-         event.preventDefault();
+         // event.preventDefault();
          alert("Please enter valid numbers for Fuel Level and Cargo Mass.")
       };
 
       let pilotStatus = document.getElementById("pilotStatus");
-      pilotStatus.innerHTML = `Pilot ${pilotName} ready`;
+      pilotStatus.innerHTML = `Pilot ${pilotName} is ready`;
       let copilotStatus = document.getElementById("copilotStatus");
-      copilotStatus.innerHTML = `Copilot ${copilotName} ready`;
+      copilotStatus.innerHTML = `Copilot ${copilotName} is ready`;
       let fuelStatus = document.getElementById("fuelStatus");
       let cargoStatus = document.getElementById("cargoStatus");
       let faultyItems = document.getElementById("faultyItems");
+      let launchStatus = document.getElementById("launchStatus");
+      let fuelGood = true;
+      let cargoGood = true;
 
       if (Number(fuelLevel) < 10000) {
-         faultyItems.style.visibility = "visible";
+         fuelStatus.innerHTML = "Fuel level too low for launch";
+         fuelGood = false;
       };
+
+      if (Number(cargoMass) > 10000) {
+         cargoStatus.innerHTML = "Cargo mass too high for launch";
+         cargoGood = false;
+      };
+
+      if (!fuelGood || !cargoGood) {
+         faultyItems.style.visibility = "visible";
+         launchStatus.style.color = "red";
+         launchStatus.innerHTML = "Shuttle not ready for launch";
+      } else {
+         launchStatus.style.color = "green";
+         launchStatus.innerHTML = "Shuttle is ready for launch!"
+      }
    });
 });
 
