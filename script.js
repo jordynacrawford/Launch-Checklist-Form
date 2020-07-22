@@ -9,6 +9,7 @@ window.addEventListener("load", function() {
       let values = [pilotName, copilotName, fuelLevel, cargoMass];
       let emptyField = false;
       let badNumber = false;
+      let badName = false;
 
       event.preventDefault();
 
@@ -23,12 +24,17 @@ window.addEventListener("load", function() {
          badNumber = true;
       };
 
+      let letters = /^[A-Za-z]+$/;
+      if (!pilotName.match(letters) || !copilotName.match(letters)) {
+         badName = true;
+      }
+
       if (emptyField) {
          // event.preventDefault();
          alert("All fields are required.");
-      } else if (badNumber) {
+      } else if (badNumber || badName) {
          // event.preventDefault();
-         alert("Please enter valid numbers for Fuel Level and Cargo Mass.")
+         alert("Make sure to enter valid information for each field.")
       };
 
       let pilotStatus = document.getElementById("pilotStatus");
@@ -43,13 +49,18 @@ window.addEventListener("load", function() {
       let cargoGood = true;
 
       if (Number(fuelLevel) < 10000) {
+         // event.preventDefault();
          fuelStatus.innerHTML = "Fuel level too low for launch";
          fuelGood = false;
+      } else {
+         fuelStatus.innerHTML = "Fuel level high enough for launch";
       };
 
       if (Number(cargoMass) > 10000) {
          cargoStatus.innerHTML = "Cargo mass too high for launch";
          cargoGood = false;
+      } else {
+         cargoStatus.innerHTML = "Cargo mass low enough for launch";
       };
 
       if (!fuelGood || !cargoGood) {
