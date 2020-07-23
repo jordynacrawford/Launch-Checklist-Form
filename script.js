@@ -1,6 +1,23 @@
 // Write your JavaScript code here!
 window.addEventListener("load", function() {
    let form = document.getElementById("launchForm");
+   fetch("https://handlers.education.launchcode.org/static/planets.json").then(function(response) {
+      response.json().then(function(planetArray) {
+         let index = Math.floor(Math.random()*planetArray.length)
+         let missionTarget = document.getElementById("missionTarget");
+         missionTarget.innerHTML = `
+         <h2>Mission Destination</h2>
+         <ol>
+            <li>Name: ${planetArray[index].name}</li>
+            <li>Diameter: ${planetArray[index].diameter}</li>
+            <li>Star: ${planetArray[index].star}</li>
+            <li>Distance from Earth: ${planetArray[index].distance}</li>
+            <li>Number of Moons: ${planetArray[index].moons}</li>
+         </ol>
+         <img src="${planetArray[index].image}"></img>`
+      })
+   });
+
    form.addEventListener("submit", function() {
       let pilotName = document.querySelector("input[name=pilotName").value;
       let copilotName = document.querySelector("input[name=copilotName").value;
@@ -30,47 +47,44 @@ window.addEventListener("load", function() {
       }
 
       if (emptyField) {
-         // event.preventDefault();
          alert("All fields are required.");
       } else if (badNumber || badName) {
-         // event.preventDefault();
          alert("Make sure to enter valid information for each field.")
-      };
-
-      let pilotStatus = document.getElementById("pilotStatus");
-      pilotStatus.innerHTML = `Pilot ${pilotName} is ready`;
-      let copilotStatus = document.getElementById("copilotStatus");
-      copilotStatus.innerHTML = `Copilot ${copilotName} is ready`;
-      let fuelStatus = document.getElementById("fuelStatus");
-      let cargoStatus = document.getElementById("cargoStatus");
-      let faultyItems = document.getElementById("faultyItems");
-      let launchStatus = document.getElementById("launchStatus");
-      let fuelGood = true;
-      let cargoGood = true;
-
-      if (Number(fuelLevel) < 10000) {
-         // event.preventDefault();
-         fuelStatus.innerHTML = "Fuel level too low for launch";
-         fuelGood = false;
       } else {
-         fuelStatus.innerHTML = "Fuel level high enough for launch";
-      };
+         let pilotStatus = document.getElementById("pilotStatus");
+         pilotStatus.innerHTML = `Pilot ${pilotName} is ready`;
+         let copilotStatus = document.getElementById("copilotStatus");
+         copilotStatus.innerHTML = `Copilot ${copilotName} is ready`;
+         let fuelStatus = document.getElementById("fuelStatus");
+         let cargoStatus = document.getElementById("cargoStatus");
+         let faultyItems = document.getElementById("faultyItems");
+         let launchStatus = document.getElementById("launchStatus");
+         let fuelGood = true;
+         let cargoGood = true;
 
-      if (Number(cargoMass) > 10000) {
-         cargoStatus.innerHTML = "Cargo mass too high for launch";
-         cargoGood = false;
-      } else {
-         cargoStatus.innerHTML = "Cargo mass low enough for launch";
-      };
+         if (Number(fuelLevel) < 10000) {
+            fuelStatus.innerHTML = "Fuel level too low for launch";
+            fuelGood = false;
+         } else {
+            fuelStatus.innerHTML = "Fuel level high enough for launch";
+         };
 
-      if (!fuelGood || !cargoGood) {
-         faultyItems.style.visibility = "visible";
-         launchStatus.style.color = "red";
-         launchStatus.innerHTML = "Shuttle not ready for launch";
-      } else {
-         launchStatus.style.color = "green";
-         launchStatus.innerHTML = "Shuttle is ready for launch!"
-      }
+         if (Number(cargoMass) > 10000) {
+            cargoStatus.innerHTML = "Cargo mass too high for launch";
+            cargoGood = false;
+         } else {
+            cargoStatus.innerHTML = "Cargo mass low enough for launch";
+         };
+
+         if (!fuelGood || !cargoGood) {
+            faultyItems.style.visibility = "visible";
+            launchStatus.style.color = "red";
+            launchStatus.innerHTML = "Shuttle not ready for launch";
+         } else {
+            launchStatus.style.color = "green";
+            launchStatus.innerHTML = "Shuttle is ready for launch!"
+         };
+      };
    });
 });
 
