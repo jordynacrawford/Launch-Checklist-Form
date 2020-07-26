@@ -41,7 +41,7 @@ window.addEventListener("load", function() {
          badNumber = true;
       };
 
-      let letters = /^[A-Za-z]+$/;
+      let letters = /^[A-Za-z\s]+$/;
       if (!pilotName.match(letters) || !copilotName.match(letters)) {
          badName = true;
       }
